@@ -13,3 +13,4 @@ To use any of your own image:
    Ctrl + '-' on windows
    Command + '-' on mac
 
+7) The displayed image is also stored in text format as "ascii_art.txt" in the same folder after running the program.
