@@ -1,0 +1,51 @@
+// ASCII art project in p5.js
+// Got to https://editor.p5js.org
+// Simply paste this code, to run and modify the project rapidly :)
+
+let video;
+let asciiDiv;
+// const asciiChars = "@%#*+=-:. ";
+// const asciiChars = " .:-=+*#%@";
+const asciiChars = " .:-=+*%@#";
+
+function setup() {
+  noCanvas();
+  // Create a video capture
+  video = createCapture(VIDEO);
+  // video.size(176, 99); // Low-res for speed and ASCII block mapping
+  // video.size(176, 99);
+  video.size(208, 117);
+  video.hide();
+
+  // Create a <pre> element to show ASCII
+  asciiDiv = createDiv();
+  asciiDiv.style('font-family', 'monospace');
+  asciiDiv.style('line-height', '7px');  // Adjust spacing for aspect ratio
+  asciiDiv.style('font-size', '7px');    // Smaller font for more density
+}
+
+function draw() {
+  video.loadPixels();
+  let asciiImage = '';
+
+  for (let y = 0; y < video.height; y++) {
+    for (let x = 0; x < video.width; x++) {
+      let index = (x + y * video.width) * 4;
+      let r = video.pixels[index + 0];
+      let g = video.pixels[index + 1];
+      let b = video.pixels[index + 2];
+
+      // Convert to grayscale using average
+      let brightness = (r + g + b)/3;
+
+      // Map brightness to ASCII character
+      let charIndex = floor(map(brightness, 0, 300, asciiChars.length - 1, 0));
+      let c = asciiChars.charAt(charIndex);
+
+      asciiImage += c;
+    }
+    asciiImage += '<br/>';
+  }
+
+  asciiDiv.html(asciiImage);
+}
